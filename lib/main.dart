@@ -1,7 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:ui_app_saif/screens/splash_screen.dart';
 import 'package:ui_app_saif/widgets/color_resources.dart';
-import 'login_screen.dart';
+import 'screens/login_screen.dart';
 import 'transition_route_observer.dart';
 
 void main() {
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [TransitionRouteObserver()],
       initialRoute: LoginScreen.routeName,
       routes: {
-        LoginScreen.routeName: (context) => LoginScreen(),
+        LoginScreen.routeName: (context) => SplashScreen(),
       },
     );
   }
