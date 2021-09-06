@@ -56,6 +56,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   var genderType= '';
 
+  String chooseYear = 'اختار السنة الدراسية';
+  String chooseCentr = 'اختار اسم السنتر';
+
 
   /// switch between login and signup
   late AnimationController _loadingController;
@@ -538,6 +541,130 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         ]));
   }
 
+  Future<Null> showBoxDialogYear(BuildContext context,String title) async {
+    // show the dialog
+    String returnVal = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12.0))),
+            title: Text(title,
+              style:GoogleFonts.tajawal(color: Colors.redAccent[100]),
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,),
+            content: Container(
+              // height: 150.0, // Change as per your requirement
+              width: 100.0,
+              height: 200,// Change as per your requirement
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 6,
+                itemBuilder: (BuildContext context, int i) {
+                  return GestureDetector(
+                    onTap: ()  async {
+                      setState(() {
+                        chooseYear = 'السنة الدراسية $i';
+                      });
+                      Navigator.pop(context, 'true');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical:8.0),
+                          child: Text('السنة الدراسية $i',
+                            style:GoogleFonts.tajawal(color: Colors.black),
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Colors.black26,
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+
+            ],
+          );
+        });
+
+    if (returnVal == 'true') {
+    }else {
+
+      // Navigator.pop(context, 'false');
+    }
+  }
+
+  Future<Null> showBoxDialogCenter(BuildContext context,String title) async {
+    // show the dialog
+    String returnVal = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12.0))),
+            title: Text(title,
+              style:GoogleFonts.tajawal(color: Colors.redAccent[100]),
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,),
+            content: Container(
+              // height: 150.0, // Change as per your requirement
+              width: 100.0,
+              height: 200,// Change as per your requirement
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 19,
+                itemBuilder: (BuildContext context, int i) {
+                  return GestureDetector(
+                    onTap: ()  async {
+                      setState(() {
+                        chooseCentr = 'اسم السنتر $i';
+                      });
+                      Navigator.pop(context, 'true');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical:8.0),
+                          child: Text('اسم السنتر $i',
+                            style:GoogleFonts.tajawal(color: Colors.black),
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Colors.black26,
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+
+            ],
+          );
+        });
+
+    if (returnVal == 'true') {
+    }else {
+
+      // Navigator.pop(context, 'false');
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: true);
@@ -704,20 +831,44 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
               vertical: 10,
             ),
             onExpandCompleted: () => _postSwitchAuthController.forward(),
-            child:     DropdownBelow(
-              itemWidth: 200,
-              itemTextstyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.redAccent),
-              boxTextstyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color:_selectedTest != null ? Colors.redAccent: Colors.black),
-              boxPadding: EdgeInsets.fromLTRB(13, 12, 0, 12),
-              boxHeight: 45,
-              boxWidth: 200,
-              hint: Text('اختار السنه الدارسية'),
-              value: _selectedTest,
-              items: _dropdownTestItems,
-              onChanged: onChangeDropdownTests,
+            child: GestureDetector(
+              onTap: (){
+                debugPrint('academic year is pressed');
+                FocusScope.of(context).requestFocus(new FocusNode());
+
+                showBoxDialogYear(context,'اختار السنة الدراسية');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xffFCeeed),
+                  // border: Border.all(
+                  //   color: Colors.black,
+                  //   width: 0,
+                  // ),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:16.0,vertical: 12),
+                        child: Text(chooseYear,style: TextStyle(
+                            color:Colors.black,
+                            decoration: TextDecoration.none,
+                            fontFamily: 'Quicksand'
+                        ),),
+                      ),
+                    ),
+                    Container(
+                      child: Icon(Icons.arrow_drop_down),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-
 
           ExpandableContainer(
             backgroundColor: theme.accentColor,
@@ -733,27 +884,45 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
               vertical: 10,
             ),
             onExpandCompleted: () => _postSwitchAuthController.forward(),
-            child:       DropdownBelow(
-              itemWidth: 200,
-              itemTextstyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.redAccent),
-              boxTextstyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color:_selectedCenter != null ? Colors.redAccent: Colors.black),
-              boxPadding: EdgeInsets.fromLTRB(13, 12, 0, 12),
-              boxHeight: 45,
-              boxWidth: 200,
-              hint: Text('اختار اسم السنتر'),
-              value: _selectedCenter,
-              items: _dropdownCentrItems,
-              onChanged: onChangeDropdownCenter,
+            child: GestureDetector(
+              onTap: (){
+
+                debugPrint('cnter is pressed');
+                FocusScope.of(context).requestFocus(new FocusNode());
+                showBoxDialogCenter(context,'اختار اسم السنتر');
+
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xffFCeeed),
+                  // border: Border.all(
+                  //   color: Colors.black,
+                  //   width: 0,
+                  // ),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal:16.0,vertical: 12),
+                        child: Text(chooseCentr,style: TextStyle(
+                            color:Colors.black,
+                            decoration: TextDecoration.none,
+                            fontFamily: 'Quicksand'
+                        ),),
+                      ),
+                    ),
+                    Container(
+                      child: Icon(Icons.arrow_drop_down),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-
-
-
-
-
-
-
-
 
           Container(
             padding: Paddings.fromRBL(cardPadding),
@@ -781,6 +950,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         ],
       ),
     );
+
 
     return FittedBox(
       child: Card(

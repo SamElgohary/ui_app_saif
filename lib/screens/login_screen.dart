@@ -6,6 +6,7 @@ import 'package:ui_app_saif/widgets/color_resources.dart';
 import '../constants.dart';
 import '../custom_route.dart';
 import '../users.dart';
+import 'dashboard_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -15,7 +16,7 @@ class LoginScreen extends StatelessWidget {
   Future<String?> _loginUser(LoginData data) {
     return Future.delayed(loginTime).then((_) {
       if (!mockUsers.containsKey(data.name)) {
-        return 'User not exists';
+        return 'هذا المستخدم غير موجود';
       }
       if (mockUsers[data.name] != data.password) {
         return 'Password does not match';
@@ -27,7 +28,7 @@ class LoginScreen extends StatelessWidget {
   Future<String?> _recoverPassword(String name) {
     return Future.delayed(loginTime).then((_) {
       if (!mockUsers.containsKey(name)) {
-        return 'User not exists';
+        return 'هذا المستخدم غير موجود';
       }
       return null;
     });
@@ -94,7 +95,7 @@ class LoginScreen extends StatelessWidget {
         ),
         theme: LoginTheme(
           primaryColor: ColorResources.RedSummer,
-          accentColor:ColorResources.Orange,
+          accentColor:Colors.white,
           errorColor: Colors.deepOrange,
           pageColorLight: ColorResources.RedSummer,
           pageColorDark: ColorResources.RedSummer,
@@ -142,9 +143,7 @@ class LoginScreen extends StatelessWidget {
           return _loginUser(loginData);
         },
         onSubmitAnimationCompleted: () {
-          // Navigator.of(context).pushReplacement(FadePageRoute(
-          //   builder: (context) => DashboardScreen(),
-          // ));
+          Navigator.of(context).pushReplacement(FadePageRoute(builder: (context) => DashboardScreen(),));
         },
         onRecoverPassword: (name) {
           print('Recover password info');

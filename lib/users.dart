@@ -3,4 +3,5 @@ const mockUsers = {
   'hunter@gmail.com': 'hunter',
   'near.huscarl@gmail.com': 'subscribe to pewdiepie',
   '@.com': '.',
+  'test': '123456',
 };

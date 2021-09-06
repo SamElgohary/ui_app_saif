@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_app_saif/widgets/color_resources.dart';
 
 class RoundButton extends StatefulWidget {
   RoundButton({
@@ -81,14 +82,13 @@ class _RoundButtonState extends State<RoundButton>
                   child: FloatingActionButton(
                     // allow more than 1 FAB in the same screen (hero tag cannot be duplicated)
                     heroTag: null,
-                    backgroundColor: primaryColor.shade400,
+                    backgroundColor:Colors.redAccent,
                     onPressed: () {
                       _pressController.forward().then((_) {
                         _pressController.reverse();
                       });
                       widget.onPressed();
                     },
-                    foregroundColor: Colors.white,
                     child: widget.icon,
                   ),
                 ),

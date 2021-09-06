@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
     return SplashScreenView(
       navigateRoute: LoginScreen(),
       duration: 3000,
-      imageSize: 250,
+      imageSize: 350,
       imageSrc: "assets/images/logof.gif",
       text: "",
       textType: TextType.ColorizeAnimationText,
