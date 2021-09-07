@@ -1,20 +1,19 @@
-
 part of auth_card;
 
 class _LoginCard extends StatefulWidget {
   _LoginCard(
       {Key? key,
-      this.loadingController,
-      required this.userValidator,
-      required this.passwordValidator,
-      required this.onSwitchRecoveryPassword,
-      required this.userType,
-      this.onSwitchAuth,
-      this.onSubmitCompleted,
-      this.hideForgotPasswordButton = false,
-      this.hideSignUpButton = false,
-      this.loginAfterSignUp = true,
-      this.hideProvidersTitle = false})
+        this.loadingController,
+        required this.userValidator,
+        required this.passwordValidator,
+        required this.onSwitchRecoveryPassword,
+        required this.userType,
+        this.onSwitchAuth,
+        this.onSubmitCompleted,
+        this.hideForgotPasswordButton = false,
+        this.hideSignUpButton = false,
+        this.loginAfterSignUp = true,
+        this.hideProvidersTitle = false})
       : super(key: key);
 
   final AnimationController? loadingController;
@@ -41,6 +40,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   final _phoneFocusNode = FocusNode();
   final _FatherPhoneFocusNode = FocusNode();
 
+
+
+
   TextEditingController? _nameController;
   TextEditingController? _passController;
   TextEditingController? _confirmPassController;
@@ -51,14 +53,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   var _isLoading = false;
   var _isSubmitting = false;
   var _showShadow = true;
-
-  int val = -1;
-
-  var genderType= '';
-
-  String chooseYear = 'اختار السنة الدراسية';
-  String chooseCentr = 'اختار اسم السنتر';
-
 
   /// switch between login and signup
   late AnimationController _loadingController;
@@ -76,19 +70,21 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   bool get buttonEnabled => !_isLoading && !_isSubmitting;
 
+  String chooseYear = 'اختار السنة الدراسية';
+  String chooseCentr = 'اختار اسم السنتر';
+  var genderType= '';
 
 
   @override
   void initState() {
     super.initState();
 
-   final auth = Provider.of<Auth>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: false);
     _nameController = TextEditingController(text: auth.email);
     _passController = TextEditingController(text: auth.password);
-    _confirmPassController = TextEditingController(text: auth.confirmPassword);
     _phoneController = TextEditingController(text: auth.phone);
     _fatherPhoneController = TextEditingController(text: auth.fhatherPhone);
-
+    _confirmPassController = TextEditingController(text: auth.confirmPassword);
 
     _loadingController = widget.loadingController ??
         (AnimationController(
@@ -114,26 +110,22 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _providerControllerList = auth.loginProviders
         .map(
           (e) => AnimationController(
-            vsync: this,
-            duration: Duration(milliseconds: 1000),
-          ),
-        )
+        vsync: this,
+        duration: Duration(milliseconds: 1000),
+      ),
+    )
         .toList();
 
     _nameTextFieldLoadingAnimationInterval = const Interval(0, .85);
     _passTextFieldLoadingAnimationInterval = const Interval(.15, 1.0);
     _textButtonLoadingAnimationInterval =
-        const Interval(.6, 1.0, curve: Curves.easeOut);
+    const Interval(.6, 1.0, curve: Curves.easeOut);
     _buttonScaleAnimation =
         Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-      parent: _loadingController,
-      curve: Interval(.4, 1.0, curve: Curves.easeOutBack),
-    ));
-
-
-
+          parent: _loadingController,
+          curve: Interval(.4, 1.0, curve: Curves.easeOutBack),
+        ));
   }
-
 
   void handleLoadingAnimationStatus(AnimationStatus status) {
     if (status == AnimationStatus.forward) {
@@ -245,7 +237,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   Future<bool> _loginProviderSubmit(
       {required AnimationController control,
-      required ProviderAuthCallback callback}) async {
+        required ProviderAuthCallback callback}) async {
     await control.forward();
 
     String? error;
@@ -276,10 +268,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   }
 
   Widget _buildUserField(
-    double width,
-    LoginMessages messages,
-    Auth auth,
-  ) {
+      double width,
+      LoginMessages messages,
+      Auth auth,
+      ) {
     return AnimatedTextFormField(
       controller: _nameController,
       width: width,
@@ -305,10 +297,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       interval: _passTextFieldLoadingAnimationInterval,
       labelText: messages.passwordHint,
       autofillHints:
-          auth.isLogin ? [AutofillHints.password] : [AutofillHints.newPassword],
+      auth.isLogin ? [AutofillHints.password] : [AutofillHints.newPassword],
       controller: _passController,
       textInputAction:
-          auth.isLogin ? TextInputAction.done : TextInputAction.next,
+      auth.isLogin ? TextInputAction.done : TextInputAction.next,
       focusNode: _passwordFocusNode,
       onFieldSubmitted: (value) {
         if (auth.isLogin) {
@@ -323,7 +315,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildConfirmPasswordField(double width, LoginMessages messages, Auth auth) {
+  Widget _buildConfirmPasswordField(
+      double width, LoginMessages messages, Auth auth) {
     return AnimatedPasswordTextFormField(
       animatedWidth: width,
       enabled: auth.isSignup,
@@ -332,16 +325,16 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       inertiaDirection: TextFieldInertiaDirection.right,
       labelText: messages.confirmPasswordHint,
       controller: _confirmPassController,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
       focusNode: _confirmPasswordFocusNode,
       onFieldSubmitted: (value) => _submit(),
       validator: auth.isSignup
           ? (value) {
-              if (value != _passController!.text) {
-                return messages.confirmPasswordError;
-              }
-              return null;
-            }
+        if (value != _passController!.text) {
+          return messages.confirmPasswordError;
+        }
+        return null;
+      }
           : (value) => null,
       onSaved: (value) => auth.confirmPassword = value!,
     );
@@ -435,9 +428,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   Widget _buildSwitchAuthButton(ThemeData theme, LoginMessages messages,
       Auth auth, LoginTheme loginTheme) {
     final calculatedTextColor =
-        (theme.cardTheme.color!.computeLuminance() < 0.5)
-            ? Colors.white
-            : theme.primaryColor;
+    (theme.cardTheme.color!.computeLuminance() < 0.5)
+        ? Colors.white
+        : theme.primaryColor;
     return FadeIn(
       controller: _loadingController,
       offset: .5,
@@ -503,138 +496,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         ]));
   }
 
-  Future<Null> showBoxDialogYear(BuildContext context,String title, Auth auth) async {
-
-    // show the dialog
-    String returnVal = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12.0))),
-            title: Text(title,
-              style:GoogleFonts.tajawal(color: Colors.redAccent[100]),
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,),
-            content: Container(
-              // height: 150.0, // Change as per your requirement
-              width: 100.0,
-              height: 200,// Change as per your requirement
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 6,
-                itemBuilder: (BuildContext context, int i) {
-                  return GestureDetector(
-                    onTap: ()  async {
-                      setState(() {
-                        chooseYear = 'السنة الدراسية $i';
-                      });
-                      Navigator.pop(context, 'true');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical:8.0),
-                          child: Text('السنة الدراسية $i',
-                            style:GoogleFonts.tajawal(color: Colors.black),
-                            textDirection: TextDirection.rtl,
-                          ),
-                        ),
-                        Container(
-                          height: 1,
-                          color: Colors.black26,
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            actions: <Widget>[
-
-            ],
-          );
-        });
-
-    if (returnVal == 'true') {
-      auth.academicYear = chooseYear;
-    }else {
-
-      // Navigator.pop(context, 'false');
-    }
-  }
-
-  Future<Null> showBoxDialogCenter(BuildContext context,String title, Auth auth) async {
-
-    // show the dialog
-    String returnVal = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12.0))),
-            title: Text(title,
-              style:GoogleFonts.tajawal(color: Colors.redAccent[100]),
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,),
-            content: Container(
-              // height: 150.0, // Change as per your requirement
-              width: 100.0,
-              height: 200,// Change as per your requirement
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 19,
-                itemBuilder: (BuildContext context, int i) {
-                  return GestureDetector(
-                    onTap: ()  async {
-                      setState(() {
-                        chooseCentr = 'اسم السنتر $i';
-                      });
-                      Navigator.pop(context, 'true');
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical:8.0),
-                          child: Text('اسم السنتر $i',
-                            style:GoogleFonts.tajawal(color: Colors.black),
-                            textDirection: TextDirection.rtl,
-                          ),
-                        ),
-                        Container(
-                          height: 1,
-                          color: Colors.black26,
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            actions: <Widget>[
-
-            ],
-          );
-        });
-
-    if (returnVal == 'true') {
-      auth.centerName = chooseCentr;
-
-    }else {
-
-      // Navigator.pop(context, 'false');
-    }
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<Auth>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: true);
     final isLogin = auth.isLogin;
     final messages = Provider.of<LoginMessages>(context, listen: false);
     final loginTheme = Provider.of<LoginTheme>(context, listen: false);
@@ -646,8 +510,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     final authForm = Form(
       key: _formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: EdgeInsets.only(
@@ -666,7 +528,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
               ],
             ),
           ),
-
           ExpandableContainer(
             backgroundColor: theme.accentColor,
             controller: _switchAuthController,
@@ -806,7 +667,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
                 debugPrint('academic year is pressed');
                 FocusScope.of(context).requestFocus(new FocusNode());
 
-                showBoxDialogYear(context,'اختار السنة الدراسية',auth);
+               showBoxDialogYear(context,'اختار السنة الدراسية',auth);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -859,7 +720,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
                 debugPrint('cnter is pressed');
                 FocusScope.of(context).requestFocus(new FocusNode());
-                showBoxDialogCenter(context,'اختار اسم السنتر',auth);
+              showBoxDialogCenter(context,'اختار اسم السنتر',auth);
 
               },
               child: Container(
@@ -894,6 +755,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             ),
           ),
 
+
           Container(
             padding: Paddings.fromRBL(cardPadding),
             width: cardWidth,
@@ -902,14 +764,14 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
                 !widget.hideForgotPasswordButton
                     ? _buildForgotPassword(theme, messages)
                     : SizedBox.fromSize(
-                        size: Size.fromHeight(16),
-                      ),
+                  size: Size.fromHeight(16),
+                ),
                 _buildSubmitButton(theme, messages, auth),
                 !widget.hideSignUpButton
                     ? _buildSwitchAuthButton(theme, messages, auth, loginTheme)
                     : SizedBox.fromSize(
-                        size: Size.fromHeight(10),
-                      ),
+                  size: Size.fromHeight(10),
+                ),
                 auth.loginProviders.isNotEmpty && !widget.hideProvidersTitle
                     ? _buildProvidersTitle(messages)
                     : Container(),
@@ -922,6 +784,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     );
 
 
+
     return FittedBox(
       child: Card(
         elevation: _showShadow ? theme.cardTheme.elevation : 0,
@@ -929,4 +792,132 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       ),
     );
   }
+
+  Future<Null> showBoxDialogYear(BuildContext context,String title, Auth auth) async {
+
+    // show the dialog
+    String returnVal = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12.0))),
+            title: Text(title,
+              style:GoogleFonts.tajawal(color: Colors.redAccent[100]),
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,),
+            content: Container(
+              // height: 150.0, // Change as per your requirement
+              width: 100.0,
+              height: 200,// Change as per your requirement
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 6,
+                itemBuilder: (BuildContext context, int i) {
+                  return GestureDetector(
+                    onTap: ()  async {
+                      setState(() {
+                        chooseYear = 'السنة الدراسية $i';
+                      });
+                      Navigator.pop(context, 'true');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical:8.0),
+                          child: Text('السنة الدراسية $i',
+                            style:GoogleFonts.tajawal(color: Colors.black),
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Colors.black26,
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+
+            ],
+          );
+        });
+
+    if (returnVal == 'true') {
+      auth.academicYear = chooseYear;
+    }else {
+
+      // Navigator.pop(context, 'false');
+    }
+  }
+
+  Future<Null> showBoxDialogCenter(BuildContext context,String title, Auth auth) async {
+
+    // show the dialog
+    String returnVal = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12.0))),
+            title: Text(title,
+              style:GoogleFonts.tajawal(color: Colors.redAccent[100]),
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,),
+            content: Container(
+              // height: 150.0, // Change as per your requirement
+              width: 100.0,
+              height: 200,// Change as per your requirement
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 19,
+                itemBuilder: (BuildContext context, int i) {
+                  return GestureDetector(
+                    onTap: ()  async {
+                      setState(() {
+                        chooseCentr = 'اسم السنتر $i';
+                      });
+                      Navigator.pop(context, 'true');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical:8.0),
+                          child: Text('اسم السنتر $i',
+                            style:GoogleFonts.tajawal(color: Colors.black),
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Colors.black26,
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+
+            ],
+          );
+        });
+
+    if (returnVal == 'true') {
+      auth.centerName = chooseCentr;
+
+    }else {
+
+      // Navigator.pop(context, 'false');
+    }
+  }
+
 }
