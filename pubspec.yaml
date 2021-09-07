@@ -63,6 +63,8 @@ flutter:
     - assets/images/bg.png
     - assets/images/male.png
     - assets/images/famale.png
+    - assets/images/logo_b.png
+    - assets/images/bg_b.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

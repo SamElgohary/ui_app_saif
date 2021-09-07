@@ -76,20 +76,13 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   bool get buttonEnabled => !_isLoading && !_isSubmitting;
 
-  List _testList = [{'no': 1, 'keyword': 'الصف الاول الثانوى'},{'no': 2, 'keyword': 'الصف الثاني الثانوي'},{'no': 3, 'keyword': 'الصف الثالص الثانوي'}];
-  late List<DropdownMenuItem> _dropdownTestItems;
-  var _selectedTest;
-
-  List _centrList = [{'no': 1, 'keyword': 'سنتر التفوق'},{'no': 2, 'keyword': 'سنتر التميز'},{'no': 3, 'keyword': 'سنتر الابرار'}];
-  late List<DropdownMenuItem> _dropdownCentrItems;
-  var _selectedCenter;
 
 
   @override
   void initState() {
     super.initState();
 
-    final auth = Provider.of<Auth>(context, listen: false);
+   final auth = Provider.of<Auth>(context, listen: false);
     _nameController = TextEditingController(text: auth.email);
     _passController = TextEditingController(text: auth.password);
     _confirmPassController = TextEditingController(text: auth.confirmPassword);
@@ -137,50 +130,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       curve: Interval(.4, 1.0, curve: Curves.easeOutBack),
     ));
 
-    _dropdownTestItems = buildDropdownTestItems(_testList);
-    _dropdownCentrItems = buildDropdownTestItems(_centrList);
+
 
   }
 
-  List<DropdownMenuItem> buildDropdownTestItems(List _testList) {
-    List<DropdownMenuItem> items= [];
-    for (var i in _testList) {
-      items.add(
-        DropdownMenuItem(
-          value: i,
-          child: Text(i['keyword']),
-        ),
-      );
-    }
-    return items;
-  }
-
-  onChangeDropdownTests(selectedTest) {
-    print(selectedTest);
-    setState(() {
-      _selectedTest = selectedTest;
-    });
-  }
-
-  List<DropdownMenuItem> buildDropdownCentrItems(List _centrList) {
-    List<DropdownMenuItem> items= [];
-    for (var i in _centrList) {
-      items.add(
-        DropdownMenuItem(
-          value: i,
-          child: Text(i['keyword']),
-        ),
-      );
-    }
-    return items;
-  }
-
-  onChangeDropdownCenter(selectedCenter) {
-    print(selectedCenter);
-    setState(() {
-      _selectedCenter = selectedCenter;
-    });
-  }
 
   void handleLoadingAnimationStatus(AnimationStatus status) {
     if (status == AnimationStatus.forward) {
@@ -242,11 +195,21 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       error = await auth.onLogin!(LoginData(
         name: auth.email,
         password: auth.password,
+        phone: auth.phone,
+        fatherPhone: auth.fhatherPhone,
+        gender: auth.gender,
+        academicYear: auth.academicYear,
+        centerName: auth.centerName,
       ));
     } else {
       error = await auth.onSignup!(LoginData(
         name: auth.email,
         password: auth.password,
+        phone: auth.phone,
+        fatherPhone: auth.fhatherPhone,
+        gender: auth.gender,
+        academicYear: auth.academicYear,
+        centerName: auth.centerName,
       ));
     }
 
@@ -434,7 +397,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     );
   }
 
-
   Widget _buildForgotPassword(ThemeData theme, LoginMessages messages) {
     return FadeIn(
       controller: _loadingController,
@@ -541,7 +503,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         ]));
   }
 
-  Future<Null> showBoxDialogYear(BuildContext context,String title) async {
+  Future<Null> showBoxDialogYear(BuildContext context,String title, Auth auth) async {
+
     // show the dialog
     String returnVal = await showDialog(
         context: context,
@@ -596,13 +559,15 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         });
 
     if (returnVal == 'true') {
+      auth.academicYear = chooseYear;
     }else {
 
       // Navigator.pop(context, 'false');
     }
   }
 
-  Future<Null> showBoxDialogCenter(BuildContext context,String title) async {
+  Future<Null> showBoxDialogCenter(BuildContext context,String title, Auth auth) async {
+
     // show the dialog
     String returnVal = await showDialog(
         context: context,
@@ -657,6 +622,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         });
 
     if (returnVal == 'true') {
+      auth.centerName = chooseCentr;
+
     }else {
 
       // Navigator.pop(context, 'false');
@@ -667,18 +634,20 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<Auth>(context, listen: true);
+    final auth = Provider.of<Auth>(context, listen: false);
     final isLogin = auth.isLogin;
     final messages = Provider.of<LoginMessages>(context, listen: false);
     final loginTheme = Provider.of<LoginTheme>(context, listen: false);
     final theme = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
-    final cardWidth = min(deviceSize.width * 0.75, 360.0);
+    final cardWidth = isLogin ? 310.0 :370.0;
     const cardPadding = 16.0;
-    final textFieldWidth = cardWidth - cardPadding * 2;
+    final textFieldWidth =  isLogin ? 310.0 :370.0;
     final authForm = Form(
       key: _formKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: EdgeInsets.only(
@@ -766,34 +735,36 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             child:  Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-               GestureDetector(
-                 onTap:(){
-                   setState(() {
-                     genderType = 'male';
-                   });
-                 },
-               child:  Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 children: [
+                GestureDetector(
+                  onTap:(){
+                    setState(() {
+                      genderType = 'male';
+                    });
+                    auth.gender = genderType;
+                  },
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
 
-                   Image.asset("assets/images/male.png",width: 64,height: 64,fit: BoxFit.cover,),
+                      Image.asset("assets/images/male.png",width: 64,height: 64,fit: BoxFit.cover,),
 
-                 Text('ذكر`',style: TextStyle(
-                     color: genderType == 'male'? Colors.redAccent:Colors.black,
-                     decoration: TextDecoration.none,
-                     fontFamily: 'Quicksand'
-                 )),
+                      Text('ذكر`',style: TextStyle(
+                          color: genderType == 'male'? Colors.orange:Colors.black,
+                          decoration: TextDecoration.none,
+                          fontFamily: 'Quicksand'
+                      )),
 
-                 ],
-               ),
-             ),
+                    ],
+                  ),
+                ),
                 SizedBox(width: 64,),
                 GestureDetector(
                   onTap:(){
                     setState(() {
                       genderType = 'famale';
                     });
+                    auth.gender = genderType;
                   },
                   child:   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -803,16 +774,15 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
                       Image.asset("assets/images/famale.png",width: 64,height: 64,fit: BoxFit.cover,),
 
                       Text('انثى',style: TextStyle(
-                          color: genderType == 'famale'? Colors.redAccent:Colors.black,
-                        decoration: TextDecoration.none,
-                        fontFamily: 'Quicksand'
+                          color: genderType == 'famale'? Colors.orange:Colors.black,
+                          decoration: TextDecoration.none,
+                          fontFamily: 'Quicksand'
                       ),
-                )
+                      )
 
                     ],
                   ),
                 )
-
               ],
             ),
           ),
@@ -836,11 +806,11 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
                 debugPrint('academic year is pressed');
                 FocusScope.of(context).requestFocus(new FocusNode());
 
-                showBoxDialogYear(context,'اختار السنة الدراسية');
+                showBoxDialogYear(context,'اختار السنة الدراسية',auth);
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xffFCeeed),
+                  color: const Color(0xfff5f5f5),
                   // border: Border.all(
                   //   color: Colors.black,
                   //   width: 0,
@@ -889,12 +859,12 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
                 debugPrint('cnter is pressed');
                 FocusScope.of(context).requestFocus(new FocusNode());
-                showBoxDialogCenter(context,'اختار اسم السنتر');
+                showBoxDialogCenter(context,'اختار اسم السنتر',auth);
 
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xffFCeeed),
+                  color: const Color(0xfff5f5f5),
                   // border: Border.all(
                   //   color: Colors.black,
                   //   width: 0,

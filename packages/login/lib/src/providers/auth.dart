@@ -91,4 +91,25 @@ class Auth with ChangeNotifier {
     _fhatherPhone = phone;
     notifyListeners();
   }
+
+  String _gender = '';
+  String get gender => _gender;
+  set gender(String gender) {
+    _gender = gender;
+    notifyListeners();
+  }
+
+  String _academicYear = '';
+  String get academicYear => _academicYear;
+  set academicYear(String academicYear) {
+    _academicYear = academicYear;
+    notifyListeners();
+  }
+
+  String _centerName = '';
+  String get centerName => _centerName;
+  set centerName(String centerName) {
+    _centerName = centerName;
+    notifyListeners();
+  }
 }

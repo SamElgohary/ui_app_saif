@@ -39,7 +39,7 @@ class LoginScreen extends StatelessWidget {
     return  Directionality(
       textDirection: TextDirection.rtl,
       child:  FlutterLogin(
-        logo: 'assets/images/logo.png',
+        logo: 'assets/images/logo_b.png',
         logoTag: Constants.logoTag,
         titleTag: Constants.titleTag,
         navigateBackAfterRecovery: true,
@@ -140,7 +140,14 @@ class LoginScreen extends StatelessWidget {
           print('Signup info');
           print('Name: ${loginData.name}');
           print('Password: ${loginData.password}');
-          return _loginUser(loginData);
+          print('phone: ${loginData.phone}');
+
+          print('fatherPhone: ${loginData.fatherPhone}');
+          print('gender: ${loginData.gender}');
+          print('academic year: ${loginData.academicYear}');
+          print('Center name: ${loginData.centerName}');
+
+        //  return _loginUser(loginData);
         },
         onSubmitAnimationCompleted: () {
           Navigator.of(context).pushReplacement(FadePageRoute(builder: (context) => DashboardScreen(),));

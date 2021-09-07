@@ -24,16 +24,16 @@ class MyApp extends StatelessWidget {
 
       theme: ThemeData(
         // brightness: Brightness.dark,
-        primarySwatch: Colors.red,
-        accentColor: Colors.orange,
-        textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.orange),
+        primarySwatch: Colors.grey,
+        accentColor:  ColorResources.Blue,
+        textSelectionTheme: TextSelectionThemeData(cursorColor:  ColorResources.Blue),
         // fontFamily: 'SourceSansPro',
         textTheme: TextTheme(
           headline3: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 45.0,
             // fontWeight: FontWeight.w400,
-            color: Colors.orange,
+            color:  ColorResources.Blue,
           ),
           button: TextStyle(
             // OpenSans is similar to NotoSans but the uppercases look a bit better IMO

@@ -653,9 +653,9 @@ class _FlutterLoginState extends State<FlutterLogin>
           children: <Widget>[
          Container(
            decoration: BoxDecoration(
-             color: Color(0xffd92f51),
+             color: Color(0xff2b2b2b),
              image: DecorationImage(
-               image: AssetImage("assets/images/bg.png"),
+               image: AssetImage("assets/images/bg_b.png"),
                fit: BoxFit.cover,
              ),
            ),
