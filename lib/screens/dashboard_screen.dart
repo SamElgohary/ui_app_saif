@@ -159,88 +159,60 @@ class _DashboardScreenState extends State<DashboardScreen>
   //   );
   // }
 
-  Widget _buildButton(
-      {Widget? icon, String? label, required Interval interval}) {
-    return RoundButton(
-      icon: icon,
-      label: label,
-      loadingController: _loadingController,
-      interval: Interval(
-        interval.begin,
-        interval.end,
-        curve: ElasticOutCurve(0.42),
-      ),
-      onPressed: () {},
+
+  Widget _buildDashboardGrid() {
+
+    Color iconColor = ColorResources.RedOrange;
+      double  iconSize = 32.0;
+
+    return
+      GridView.count(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 8,
+        ),
+        childAspectRatio: .9,
+        // crossAxisSpacing: 5,
+      crossAxisCount: 2,
+      controller: new ScrollController(keepScrollOffset: false),
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      // Generate 100 Widgets that display their index in the List
+          children: [
+            _buildButton('بنك الاسئلة', Icon(FontAwesomeIcons.question,color: iconColor,size: iconSize),),
+            _buildButton('ملفات', Icon(FontAwesomeIcons.file,color: iconColor,size: iconSize),),
+            _buildButton('امتحانات', Icon(FontAwesomeIcons.tasks,color: iconColor,size: iconSize),),
+            _buildButton('فيدوهات', Icon(FontAwesomeIcons.fileVideo,color: iconColor,size: iconSize),),
+            _buildButton('رسائل', Icon(Icons.messenger,color: iconColor,size: iconSize),),
+            _buildButton('باركود', Icon(FontAwesomeIcons.qrcode,color: iconColor,size: iconSize),),
+
+          ],
     );
   }
 
-  Widget _buildDashboardGrid() {
-    const step = 0.04;
-    const aniInterval = 0.75;
 
-    return GridView.count(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32.0,
-        vertical: 20,
-      ),
-      childAspectRatio: .9,
-      // crossAxisSpacing: 5,
-      crossAxisCount: 3,
-      children: [
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.tasks,color: Colors.black,),
-          label: 'الاختبارات',
-          interval: Interval(0, aniInterval),
-        ),
-        _buildButton(
-          icon: Container(
-            // fix icon is not centered like others for some reasons
-            padding: const EdgeInsets.only(left: 16.0),
-            alignment: Alignment.centerLeft,
-            child: Icon(
-              FontAwesomeIcons.question,
-              size: 20,
-            ),
+  Widget _buildButton(String text, Icon icon) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color:  ColorResources.Beige,
+          border: Border.all(
+            color: ColorResources.Orange,
+            width: 2.0,
           ),
-          label: 'بنك الاسئله',
-          interval: Interval(step, aniInterval + step),
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.file),
-          label: 'الملفات',
-          interval: Interval(step * 2, aniInterval + step * 2),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            icon,
+            SizedBox(height:12),
+            Text(text,style: GoogleFonts.tajawal(color: ColorResources.RedOrange,fontSize: 16),)
+          ],
         ),
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.viadeo),
-          label: 'فيديوهات',
-          interval: Interval(0, aniInterval),
-        ),
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.history),
-          label: 'سجلات',
-          interval: Interval(step * 2, aniInterval + step * 2),
-        ),
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.sms),
-          label: 'رسائل',
-          interval: Interval(0, aniInterval),
-        ),
-        _buildButton(
-          icon: Icon(Icons.trending_up),
-          label: 'اخري',
-          interval: Interval(step, aniInterval + step),
-        ),
-        _buildButton(
-          icon: Icon(Icons.trending_up),
-          label: 'اخري',
-          interval: Interval(step, aniInterval + step),
-        ),
-        _buildButton(
-          icon: Icon(Icons.trending_up),
-          label: 'اخري',
-          interval: Interval(step * 2, aniInterval + step * 2),
-        ),
-      ],
+      ),
     );
   }
 
@@ -277,7 +249,13 @@ class _DashboardScreenState extends State<DashboardScreen>
           body: Container(
             width: double.infinity,
             height: double.infinity,
-            color: theme.primaryColor.withOpacity(.1),
+            decoration: BoxDecoration(
+              color: theme.primaryColor.withOpacity(.1),
+              image: DecorationImage(
+                image: AssetImage("assets/images/bg_b.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
             child: Stack(
               children: <Widget>[
                 Column(
@@ -289,25 +267,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     // ),
                     Expanded(
                       flex: 8,
-                      child: ShaderMask(
-                        // blendMode: BlendMode.srcOver,
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            tileMode: TileMode.clamp,
-                            colors: <Color>[
-                              Colors.deepPurpleAccent.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                              Colors.deepPurple.shade100,
-                              // Colors.red,
-                              // Colors.yellow,
-                            ],
-                          ).createShader(bounds);
-                        },
-                        child: _buildDashboardGrid(),
-                      ),
+                      child:  _buildDashboardGrid()
                     ),
                   ],
                 ),
