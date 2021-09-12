@@ -66,6 +66,22 @@ flutter:
     - assets/images/famale.png
     - assets/images/logo_b.png
     - assets/images/bg_b.png
+    - assets/images/bg_w.png
+    - assets/images/message.png
+    - assets/images/message2.png
+    - assets/images/qr.png
+    - assets/images/questions.png
+    - assets/images/quiz.png
+    - assets/images/video.png
+    - assets/images/files.png
+    - assets/images/re.png
+    - assets/images/message_tran.png
+    - assets/images/qr_tran.png
+    - assets/images/questions_tran.png
+    - assets/images/quiz_tran.png
+    - assets/images/re_tran.png
+    - assets/images/video_tran.png
+    - assets/images/files_tran.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

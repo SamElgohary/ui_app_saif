@@ -62,17 +62,17 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   AppBar _buildAppBar(ThemeData theme) {
     final menuBtn = IconButton(
-      color: theme.accentColor,
+      color: ColorResources.Blue,
       icon: const Icon(FontAwesomeIcons.bars),
       onPressed: () {},
     );
     final signOutBtn = IconButton(
       icon: const Icon(FontAwesomeIcons.signOutAlt),
-      color: theme.accentColor,
+      color: ColorResources.Blue,
       onPressed: () => _goToLogin(context),
     );
     final title = Center(
-      child: Text('الصفحة الرئيسية',style:GoogleFonts.tajawal(color: Colors.redAccent[100],fontSize: 24),
+      child: Text('الصفحة الرئيسية',style:GoogleFonts.tajawal(color: ColorResources.Blue,fontSize: 24),
         textAlign: TextAlign.center,
         textDirection: TextDirection.rtl,),
     );
@@ -95,7 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         ),
       ],
       title: title,
-      backgroundColor: theme.primaryColor.withOpacity(.1),
+      backgroundColor: Colors.white,
       elevation: 0,
       textTheme: theme.accentTextTheme,
       iconTheme: theme.accentIconTheme,
@@ -163,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           horizontal: 8.0,
           vertical: 8,
         ),
-        childAspectRatio: .8,
+        childAspectRatio: .9,
         // crossAxisSpacing: 5,
       crossAxisCount: 2,
       controller: new ScrollController(keepScrollOffset: false),
@@ -171,12 +171,13 @@ class _DashboardScreenState extends State<DashboardScreen>
       scrollDirection: Axis.vertical,
       // Generate 100 Widgets that display their index in the List
           children: [
-            _buildButton('بنك الاسئلة',"https://www.edu2ksa.com/wp-content/uploads/2018/05/%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A7%D8%B3%D8%A6%D9%84%D8%A9-%D9%84%D9%85%D9%88%D8%A7%D8%AF-%D8%A7%D9%84%D8%B5%D9%81-%D8%A7%D9%84%D8%AB%D8%A7%D9%84%D8%AB-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D8%AF%D8%A7%D8%A6%D9%8A-%D8%A7%D9%84%D9%81%D8%B5%D9%84-%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%8A.jpg",),
-            _buildButton('ملفات', "https://www.europarl.europa.eu/resources/library/images/20190612PHT54317/20190612PHT54317-ml.jpg"),
-            _buildButton('امتحانات', "https://www.minia.edu.eg/images/nurse/nurse2020-08-042102381.jpg"),
-            _buildButton('فيدوهات',"https://img.freepik.com/free-photo/online-live-video-marketing-concept_12892-37.jpg?size=626&ext=jpg&ga=GA1.2.1937627297.1630454400"),
-            _buildButton('رسائل', "https://www.lifewire.com/thmb/IS4gxtmhvYTokbYCcm4ygOUBX50=/1920x1200/filters:fill(auto,1)/how-to-fix-the-unknown-message-not-found-on-iphone-error-849e332f4e9241db9cb80ef9ddb63e01.jpg",),
-            _buildButton('باركود', "https://me.kaspersky.com/content/ar-ae/images/repository/isc/2020/9910/a-guide-to-qr-codes-and-how-to-scan-qr-codes-1.jpg",),
+            _buildButton('بنك الاسئلة',"assets/images/questions_tran.png",),
+            _buildButton('امتحانات', "assets/images/quiz_tran.png"),
+            _buildButton('فيدوهات',"assets/images/video_tran.png"),
+            _buildButton('ملفات', "assets/images/files_tran.png"),
+            _buildButton('رسائل', "assets/images/message_tran.png",),
+            _buildButton('باركود', "assets/images/qr_tran.png",),
+            _buildButton('سجلات', "assets/images/re_tran.png",),
 
           ],
     );
@@ -184,76 +185,38 @@ class _DashboardScreenState extends State<DashboardScreen>
 
 
   Widget _buildButton(String text, String img) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color:  ColorResources.Beige,
+    return Container(
+      margin: new EdgeInsets.symmetric(
+        horizontal: 8.0,
+        vertical: 8.0,
+      ),
+      decoration: BoxDecoration(
           border: Border.all(
-            color: ColorResources.Orange,
-            width: 1.0,
+            color: Colors.grey.withOpacity(0.5),
+            width: 2.0,
           ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Container(
-          color: Colors.white,
-          margin: new EdgeInsets.symmetric(
-            horizontal: 3.0,
-            vertical: 3.0,
+          borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: GestureDetector(
+        child: Stack(children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12.0),
+            child:  Image.asset(img,fit: BoxFit.cover,width: MediaQuery.of(context).size.width,height: MediaQuery.of(context).size.height,),
           ),
-          child: GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey.withOpacity(0.5),
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(1.0),
-                    color: Colors.white
-                ),
 
-                child: Stack(children: [
-                  Image.network(img,fit: BoxFit.cover,width: MediaQuery.of(context).size.width,height: MediaQuery.of(context).size.height,),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey.withOpacity(0.5),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(1.0),
-                        color: Colors.black38
-                    ),),
-                  Align(alignment:  Alignment.center,
-                    child: Text(
-                      text,
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 3.0,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ],
-                        decoration: TextDecoration.none,
-                        fontSize: 18,
-                        fontFamily: "WorkSansMedium",
-                        color: Colors.white,
-                      ),
-                    ),)
-                ],),
 
-              ),
-            ),
-            onTap: () {
+          Align(alignment:  Alignment.bottomCenter,
+            child: Text(
+              text,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.tajawal(fontSize: 18,color: Colors.black87,fontWeight: FontWeight.bold ),
+            ),)
+        ],),
+        onTap: () {
 
-            },
+        },
 
-          ),
-        ),
       ),
     );
   }
@@ -274,7 +237,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             decoration: BoxDecoration(
               color: theme.primaryColor.withOpacity(.1),
               image: DecorationImage(
-                image: AssetImage("assets/images/bg_b.png"),
+                image: AssetImage("assets/images/bg_w.png"),
                 fit: BoxFit.cover,
               ),
             ),
