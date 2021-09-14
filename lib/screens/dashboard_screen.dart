@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ui_app_saif/widgets/color_resources.dart';
 import 'package:ui_app_saif/widgets/fade_in.dart';
 import 'package:ui_app_saif/widgets/side_menu.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../transition_route_observer.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -75,11 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         });
       },
     );
-    final signOutBtn = IconButton(
-      icon: const Icon(FontAwesomeIcons.signOutAlt),
-      color: ColorResources.Blue,
-      onPressed: () => _goToLogin(context),
-    );
+
     final title = Center(
       child: Text(
         'الصفحة الرئيسية',
@@ -97,15 +94,17 @@ class _DashboardScreenState extends State<DashboardScreen>
         fadeDirection: FadeDirection.startToEnd,
         child: menuBtn,
       ),
+
       actions: <Widget>[
         FadeIn(
           controller: _loadingController,
           offset: .3,
           curve: headerAniInterval,
           fadeDirection: FadeDirection.endToStart,
-          child: signOutBtn,
+          child: SizedBox.shrink(),
         ),
       ],
+
       title: title,
       backgroundColor: Colors.white,
       elevation: 0,
@@ -180,9 +179,14 @@ class _DashboardScreenState extends State<DashboardScreen>
       scrollDirection: Axis.vertical,
       // Generate 100 Widgets that display their index in the List
       children: [
-        _buildButton(
-          'بنك الاسئلة',
-          "assets/images/questions_tran.png",
+        GestureDetector(
+          onTap: (){
+
+          },
+          child: _buildButton(
+            'بنك الاسئلة',
+            "assets/images/questions_tran.png",
+          ),
         ),
         _buildButton('امتحانات', "assets/images/exam_tran.png"),
         _buildButton('فيدوهات', "assets/images/video_tran.png"),
@@ -216,34 +220,31 @@ class _DashboardScreenState extends State<DashboardScreen>
         ),
         borderRadius: BorderRadius.circular(12.0),
       ),
-      child: GestureDetector(
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.asset(
-                img,
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-              ),
+      child:Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12.0),
+            child: Image.asset(
+              img,
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Text(
-                text,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.tajawal(
-                    fontSize: 18,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold),
-              ),
-            )
-          ],
-        ),
-        onTap: () {},
-      ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              text,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.tajawal(
+                  fontSize: 18,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      )
     );
   }
 
@@ -265,30 +266,40 @@ class _DashboardScreenState extends State<DashboardScreen>
                 });
               },
             ),
-            screenContents: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  color: theme.primaryColor.withOpacity(.1),
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/bg_logo.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Stack(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        // Expanded(
-                        //   flex: 2,
-                        //   child: _buildHeader(theme),
-                        // ),
-                        Expanded(flex: 8, child: _buildDashboardGrid()),
-                      ],
+            screenContents: GestureDetector(
+              onTap: (){
+                if (drawerStatus.toString() == 'FSBStatus.FSB_OPEN'){
+                  setState(() {
+                    drawerStatus = FSBStatus.FSB_CLOSE;
+                  });
+                }
+              },
+              child:   Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/bg_logo.png"),
+                      fit: BoxFit.cover,
                     ),
-                  ],
-                )), // Your Screen Widget
+                  ),
+                  child: Stack(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          SizedBox(height: 10),
+                          // Expanded(
+                          //   flex: 2,
+                          //   child: _buildHeader(theme),
+                          // ),
+                          Expanded(flex: 8, child: _buildDashboardGrid()),
+                        ],
+                      ),
+                    ],
+                  )),
+            ),
+           // Your Screen Widget
             status: drawerStatus,
           ),
 
@@ -296,5 +307,8 @@ class _DashboardScreenState extends State<DashboardScreen>
       ),
     );
   }
+
+
+
 }
 
