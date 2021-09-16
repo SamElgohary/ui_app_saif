@@ -343,7 +343,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   Widget _buildPhoneNumberField(double width, LoginMessages messages, Auth auth) {
     return AnimatedPhoneTextFormField(
       animatedWidth: width,
-      enabled: auth.isSignup,
+      enabled: true,
       loadingController: _loadingController,
       inertiaController: _postSwitchAuthController,
       inertiaDirection: TextFieldInertiaDirection.right,
@@ -353,7 +353,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       focusNode: _phoneFocusNode,
       keyboardType: TextInputType.phone,
       onFieldSubmitted: (value) => _submit(),
-      validator: auth.isSignup
+      validator: true
           ? (value) {
         if (value != _phoneController!.text) {
           return messages.phoneError;
@@ -521,7 +521,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildUserField(textFieldWidth, messages, auth),
+                //phone
+                _buildPhoneNumberField(textFieldWidth, messages, auth),
                 SizedBox(height: 20),
                 _buildPasswordField(textFieldWidth, messages, auth),
                 SizedBox(height: 10),
@@ -545,6 +546,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             child: _buildConfirmPasswordField(textFieldWidth, messages, auth),
           ),
 
+          //phone
           ExpandableContainer(
             backgroundColor: theme.accentColor,
             controller: _switchAuthController,
@@ -559,8 +561,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
               vertical: 10,
             ),
             onExpandCompleted: () => _postSwitchAuthController.forward(),
-            child: _buildPhoneNumberField(textFieldWidth, messages, auth),
+            child: _buildUserField(textFieldWidth, messages, auth),
           ),
+
+
 
           ExpandableContainer(
             backgroundColor: theme.accentColor,
